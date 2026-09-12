@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ShieldPlus.AI — Multimodal Threat Intelligence demo dashboard." />
+  <title>ShieldPlus.AI — Threat Intelligence</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <a class="brand" href="#home">
+      <span class="brand-mark">✦</span>
+      <span>ShieldPlus<span class="accent">.AI</span></span>
+    </a>
+
+    <nav>
+      <a href="#analyzer">Analyzer</a>
+      <a href="#how">How it works</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#team">Team</a>
+    </nav>
+
+    <a class="nav-btn" href="#analyzer">Try Demo →</a>
+  </header>
+
+  <main>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero section" id="home">
+
+      <div class="hero-copy reveal">
+
+        <div class="eyebrow">
+          <span class="pulse"></span>
+          MULTIMODAL THREAT INTELLIGENCE
+        </div>
+
+        <h1>
+          Stop the scam.<br />
+          <span>Before panic wins.</span>
+        </h1>
+
+        <p class="hero-text">
+          ShieldPlus.AI analyzes suspicious screenshots and text, identifies social-engineering red flags,
+          scores the risk, and gives a clear voice-first verdict.
+        </p>
+
+        <div class="hero-actions">
+          <a class="primary-btn" href="#analyzer">
+            Analyze a Threat <span>↗</span>
+          </a>
+
+          <a class="secondary-btn" href="#how">
+            See how it works
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div>
+            <strong>1.2s</strong>
+            <span>Target risk scoring</span>
+          </div>
+
+          <div>
+            <strong>0–100%</strong>
+            <span>Risk gauge</span>
+          </div>
+
+          <div>
+            <strong>HI / EN</strong>
+            <span>Voice-first alerts</span>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ================= HERO VISUAL ================= -->
+
+      <div class="hero-visual reveal">
+
+        <div class="orb"></div>
+
+        <div class="threat-card">
+
+          <div class="card-top">
+            <span class="status-dot"></span>
+            LIVE THREAT ANALYSIS
+            <span class="tiny">DEMO</span>
+          </div>
+
+
+          <!-- RISK CIRCLE -->
+
+          <div class="risk-ring" id="heroRing">
+            <span id="heroRisk">0%</span>
+            <small>RISK</small>
+          </div>
+
+
+          <!-- DYNAMIC THREAT BARS -->
+
+          <div class="mini-bars">
+
+            <div>
+              <span>Urgency trigger</span>
+
+              <b id="heroUrgencyLabel">—</b>
+
+              <i>
+                <em id="heroUrgencyBar" style="width:0%"></em>
+              </i>
+            </div>
+
+
+            <div>
+              <span>Domain anomaly</span>
+
+              <b id="heroDomainLabel">—</b>
+
+              <i>
+                <em id="heroDomainBar" style="width:0%"></em>
+              </i>
+            </div>
+
+
+            <div>
+              <span>Payment request</span>
+
+              <b id="heroPaymentLabel">—</b>
+
+              <i>
+                <em id="heroPaymentBar" style="width:0%"></em>
+              </i>
+            </div>
+
+          </div>
+
+
+          <!-- HERO VERDICT -->
+
+          <div class="verdict">
+
+            <span>⚠</span>
+
+            <div>
+              <strong>Likely social-engineering scam</strong>
+
+              <small>
+                Do not share OTP, PIN or payment details.
+              </small>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= ANALYZER ================= -->
+
+    <section class="section analyzer-section" id="analyzer">
+
+      <div class="section-heading reveal">
+
+        <div>
+          <div class="eyebrow">01 / LIVE MVP</div>
+          <h2>Threat Analyzer</h2>
+        </div>
+
+        <p>
+          Paste suspicious text or upload a screenshot. This browser demo uses local heuristics;
+          connect your backend later for real OCR/LLM scoring.
+        </p>
+
+      </div>
+
+
+      <div class="analyzer-grid">
+
+
+        <!-- INPUT PANEL -->
+
+        <div class="input-panel glass reveal">
+
+          <div class="panel-head">
+            <span>INPUT INGESTION</span>
+            <span class="chip">OCR + TEXT</span>
+          </div>
+
+          <label for="threatText">
+            Suspicious message / URL
+          </label>
+
+          <textarea
+            id="threatText"
+            placeholder="Example: Your bank account will be blocked today. Verify KYC immediately at http://secure-kyc.example..."
+          ></textarea>
+
+
+          <div class="upload-row">
+
+            <label class="upload-box" for="imageInput">
+
+              <span>▣</span>
+
+              <b>Upload screenshot</b>
+
+              <small>PNG / JPG · demo preview</small>
+
+              <input
+                id="imageInput"
+                type="file"
+                accept="image/*"
+              />
+
+            </label>
+
+            <div id="imagePreview" class="image-preview hidden"></div>
+
+          </div>
+
+
+          <div class="sample-row">
+
+            <span>Try sample:</span>
+
+            <button data-sample="bank">
+              Fake KYC
+            </button>
+
+            <button data-sample="task">
+              Task scam
+            </button>
+
+            <button data-sample="qr">
+              QR reverse charge
+            </button>
+
+          </div>
+
+
+          <button id="analyzeBtn" class="primary-btn full">
+            Analyze Threat <span>→</span>
+          </button>
+
+          <p class="demo-note">
+            Demo only — no message is sent to a server by this page.
+          </p>
+
+        </div>
+
+
+        <!-- RESULT PANEL -->
+
+        <div class="result-panel glass reveal">
+
+          <div class="panel-head">
+
+            <span>AI VERDICT</span>
+
+            <span id="resultStatus" class="chip neutral">
+              WAITING
+            </span>
+
+          </div>
+
+
+          <div class="score-row">
+
+            <div class="big-score">
+
+              <span id="riskScore">—</span>
+
+              <small>RISK SCORE</small>
+
+            </div>
+
+
+            <div class="score-copy">
+
+              <h3 id="verdictTitle">
+                Run an analysis
+              </h3>
+
+              <p id="verdictText">
+                Your result will appear here with an understandable explanation rather than a wall of security jargon.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="meter">
+            <span id="meterFill"></span>
+          </div>
+
+
+          <div class="flags" id="flags">
+
+            <div class="empty-state">
+              No analysis yet. Enter a message and press
+              <b>Analyze Threat</b>.
+            </div>
+
+          </div>
+
+
+          <button
+            id="voiceBtn"
+            class="secondary-btn full"
+            disabled
+          >
+            🔊 Read verdict aloud
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= COMPLAINT ================= -->
+
+      <div class="complaint glass reveal">
+
+        <div>
+
+          <div class="eyebrow">
+            INCIDENT RESPONSE
+          </div>
+
+          <h3>
+            One-click complaint draft
+          </h3>
+
+          <p>
+            Generate a structured incident summary that a user can review before submitting through the appropriate official channel.
+          </p>
+
+        </div>
+
+        <button id="complaintBtn" class="secondary-btn">
+          Generate draft
+        </button>
+
+      </div>
+
+
+      <div id="complaintBox" class="complaint-box hidden"></div>
+
+    </section>
+
+
+    <!-- ================= HOW IT WORKS ================= -->
+
+    <section class="section" id="how">
+
+      <div class="section-heading reveal">
+
+        <div>
+
+          <div class="eyebrow">
+            02 / SIMPLE BY DESIGN
+          </div>
+
+          <h2>
+            From panic to clarity.
+          </h2>
+
+        </div>
+
+        <p>
+          Four steps turn a confusing security event into a clear decision.
+        </p>
+
+      </div>
+
+
+      <div class="steps">
+
+        <article class="step reveal">
+          <span>01</span>
+          <div class="step-icon">⌁</div>
+          <h3>Upload</h3>
+          <p>Screenshot or paste the suspicious message.</p>
+        </article>
+
+
+        <article class="step reveal">
+          <span>02</span>
+          <div class="step-icon">◫</div>
+          <h3>Extract</h3>
+          <p>
+            OCR and regex-style parsing find URLs, UPI/IFSC clues and text signals.
+          </p>
+        </article>
+
+
+        <article class="step reveal">
+          <span>03</span>
+          <div class="step-icon">◉</div>
+          <h3>Score</h3>
+          <p>
+            A threat engine combines urgency and anomaly heuristics into a 0–100% risk score.
+          </p>
+        </article>
+
+
+        <article class="step reveal">
+          <span>04</span>
+          <div class="step-icon">◖</div>
+          <h3>Alert</h3>
+          <p>
+            A plain-language voice verdict helps break the panic loop.
+          </p>
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= ARCHITECTURE ================= -->
+
+    <section class="section" id="architecture">
+
+      <div class="section-heading reveal">
+
+        <div>
+
+          <div class="eyebrow">
+            03 / UNDER THE HOOD
+          </div>
+
+          <h2>
+            Technical architecture
+          </h2>
+
+        </div>
+
+        <p>
+          The frontend below is the presentation layer. Your future backend can replace the demo scoring function.
+        </p>
+
+      </div>
+
+
+      <div class="architecture glass reveal">
+
+        <div class="arch-node">
+          <b>01</b>
+          <strong>Input Ingestion</strong>
+          <small>EasyOCR + Regex</small>
+        </div>
+
+        <div class="arch-line">→</div>
+
+        <div class="arch-node active">
+          <b>02</b>
+          <strong>Scoring Engine</strong>
+          <small>Entropy + Urgency + LLM heuristics</small>
+        </div>
+
+        <div class="arch-line">→</div>
+
+        <div class="arch-node">
+          <b>03</b>
+          <strong>Voice Synthesis</strong>
+          <small>Hindi / English alert</small>
+        </div>
+
+        <div class="arch-line">→</div>
+
+        <div class="arch-node">
+          <b>04</b>
+          <strong>Auto-Complaint</strong>
+          <small>Reviewable incident draft</small>
+        </div>
+
+      </div>
+
+
+      <div class="moat-grid">
+
+        <article class="moat reveal">
+          <span>◈</span>
+          <h3>Proprietary scoring</h3>
+          <p>
+            Domain entropy + urgency heuristics + few-shot LLM approach.
+          </p>
+        </article>
+
+
+        <article class="moat reveal">
+          <span>◉</span>
+          <h3>Voice-first UX</h3>
+          <p>
+            Audio intervention designed for high-stress, non-technical users.
+          </p>
+        </article>
+
+
+        <article class="moat reveal">
+          <span>✣</span>
+          <h3>Multimodal</h3>
+          <p>
+            OCR, voice and text analysis unified into one experience.
+          </p>
+        </article>
+
+
+        <article class="moat reveal">
+          <span>⌘</span>
+          <h3>Team depth</h3>
+          <p>
+            AI, frontend, backend and cyber threat-intelligence capabilities.
+          </p>
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= ROADMAP ================= -->
+
+    <section class="section" id="roadmap">
+
+      <div class="section-heading reveal">
+
+        <div>
+
+          <div class="eyebrow">
+            04 / WHAT'S NEXT
+          </div>
+
+          <h2>
+            Innovation roadmap
+          </h2>
+
+        </div>
+
+        <p>
+          Four future directions from the hackathon MVP toward proactive AI defense.
+        </p>
+
+      </div>
+
+
+      <div class="roadmap">
+
+        <article class="road-card reveal">
+          <span>01</span>
+          <h3>Deepfake Voice Detector</h3>
+          <p>
+            Real-time spectral analysis concept for cloned voices in extortion calls.
+          </p>
+        </article>
+
+
+        <article class="road-card reveal">
+          <span>02</span>
+          <h3>AI Honey-Trap Agent</h3>
+          <p>
+            Future concept for engaging scammers and tracking mule-account patterns with strong safety controls.
+          </p>
+        </article>
+
+
+        <article class="road-card reveal">
+          <span>03</span>
+          <h3>Edge AI & Small LMs</h3>
+          <p>
+            Llama-3-Mobile / Phi-3 direction for privacy-focused offline inference.
+          </p>
+        </article>
+
+
+        <article class="road-card reveal">
+          <span>04</span>
+          <h3>Native Integrations</h3>
+          <p>
+            WhatsApp Business, Chrome/Edge extension and banking SDK hooks.
+          </p>
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= TEAM ================= -->
+
+    <section class="section team-section" id="team">
+
+      <div class="section-heading reveal">
+
+        <div>
+
+          <div class="eyebrow">
+            05 / THE TEAM
+          </div>
+
+          <h2>
+            Built by four perspectives.
+          </h2>
+
+        </div>
+
+        <p>
+          Equal ownership across the AI, frontend, backend and cyber-intelligence layers.
+        </p>
+
+      </div>
+
+
+      <div class="team-grid">
+
+        <article class="person reveal">
+          <div class="avatar">YR</div>
+          <h3>Yash Ratewal</h3>
+          <p>
+            Lead — Core AI Architecture & Orchestration
+          </p>
+        </article>
+
+
+        <article class="person reveal">
+          <div class="avatar">V</div>
+          <h3>Vinay</h3>
+          <p>
+            Frontend Engineering — Extension UI & UX
+          </p>
+        </article>
+
+
+        <article class="person reveal">
+          <div class="avatar">A</div>
+          <h3>Agam</h3>
+          <p>
+            Backend Systems — FastAPI & OCR Pipelines
+          </p>
+        </article>
+
+
+        <article class="person reveal">
+          <div class="avatar">H</div>
+          <h3>Himanshu</h3>
+          <p>
+            Cyber Threat Intelligence — Research & Legal Drafting
+          </p>
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= FINAL CTA ================= -->
+
+    <section class="final-cta section reveal">
+
+      <div class="eyebrow">
+        THE VISION
+      </div>
+
+      <h2>
+        From reactive detection<br />
+        <span>to proactive AI defense.</span>
+      </h2>
+
+      <p>
+        Eliminating social engineering at scale through intelligent, human-centered cyber defense.
+      </p>
+
+      <a class="primary-btn" href="#analyzer">
+        Launch Live Demo →
+      </a>
+
+      <div class="footer-meta">
+        GitHub: shieldplus-ai
+        &nbsp;•&nbsp;
+        Email: team@shieldplus.ai
+        &nbsp;•&nbsp;
+        Demo: Live Dashboard
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer>
+
+    <span>
+      © 2026 ShieldPlus.AI
+    </span>
+
+    <span>
+      College Hackathon · CSE 1st-Sem Innovation Showcase
+    </span>
+
+  </footer>
+
+
+  <!-- ================= JAVASCRIPT ================= -->
+
+  <script src="script.js"></script>
+
+</body>
+</html>
